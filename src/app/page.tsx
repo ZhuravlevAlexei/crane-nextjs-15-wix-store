@@ -1,13 +1,18 @@
 import Image from "next/image";
-import banner from "@/assets/banner.jpg";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { delay } from "@/lib/utils";
 import { Suspense } from "react";
-import { getWixClient } from "@/lib/wix-client.base";
+import { ArrowRight } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import Product from "@/components/Product";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import banner from "@/assets/banner.jpg";
+import { treeReference } from "@/lib/constants";
+import { delay } from "@/lib/utils";
+import { getWixClient } from "@/lib/wix-client.base";
+import { getCategoryBySlug } from "@/wix-api/collections";
+import { queryProducts } from "@/wix-api/products";
 
 export default function Home() {
   return (
@@ -30,7 +35,7 @@ export default function Home() {
         <div className="relative hidden h-full w-1/2 md:block">
           <Image
             src={banner}
-            alt="Crane Shop Banner"
+            alt="Flow Shop Banner"
             className="h-full object-cover"
           />
           <div className="from-secondary absolute inset-0 bg-linear-to-r via-transparent to-transparent"></div>
@@ -44,7 +49,7 @@ export default function Home() {
 }
 
 async function FeaturedProducts() {
-  await delay(500);
+  await delay(1000);
 
   const wixClient = getWixClient();
 
@@ -58,18 +63,29 @@ async function FeaturedProducts() {
   //   .hasSome("collectionIds", [collection._id])
   //   .descending("lastUpdated")
   //   .find();
+
+  //ну и развитие через функцию, но пока неясно как быть с коллекциями
+  // const { collection } = getCollectionBySlug("featured-products");
   //УСТАРЕЛО
 
-  //пока для работы просто беру 8 любых товаров, т.к. структура данных и методы работы
-  //с новыми категориями неясны, а документация по ним пока не нашел
-  const featuredProducts = await wixClient.productsV3.queryProducts(
-    {
-      cursorPaging: {
-        limit: 8,
-      },
-    },
-    { fields: ["MEDIA_ITEMS_INFO", "PLAIN_DESCRIPTION"] },
+  //через 2 дня разобрался в документации
+  //новый вариант коллекций через категории
+  const category = await getCategoryBySlug("featured-products");
+  if (!category?._id) return null;
+
+  const categoryId = String(category._id);
+  const productsIds = await wixClient.categories.listItemsInCategory(
+    categoryId,
+    treeReference,
   );
+  //сводим все id продуктов в один простой массив для фильтра
+  //в продуктах каталога V3
+  const catalogItemIds: string[] =
+    productsIds.items?.flatMap((item) =>
+      item.catalogItemId ? [item.catalogItemId] : [],
+    ) || [];
+
+  const featuredProducts = await queryProducts({ catalogItemIds });
 
   if (!featuredProducts?.products?.length) return null;
 

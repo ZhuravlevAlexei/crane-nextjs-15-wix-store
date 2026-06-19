@@ -14,3 +14,12 @@ export function convertWixImageUrl(wixUrl: string) {
 
   return `https://static.wixstatic.com/media/${fileName}`;
 }
+
+export function formatCurrency(
+  price: number | string = 0,
+  currency: string = "USD",
+) {
+  return Intl.NumberFormat("en", { style: "currency", currency }).format(
+    Number(price),
+  );
+}

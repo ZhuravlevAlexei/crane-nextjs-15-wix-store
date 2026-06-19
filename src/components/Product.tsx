@@ -1,7 +1,9 @@
-import { productsV3 } from "@wix/stores";
 import Link from "next/link";
 import WixImage from "./WixImage";
-import { convertWixImageUrl } from "@/lib/utils";
+import { productsV3 } from "@wix/stores";
+
+import { convertWixImageUrl, formatCurrency } from "@/lib/utils";
+import Badge from "./ui/badge";
 
 interface ProductProps {
   product: productsV3.V3Product;
@@ -13,10 +15,9 @@ export default function Product({ product }: ProductProps) {
   const productUrl = convertWixImageUrl(mainImage?.image || "");
 
   return (
-    <Link href={`/shop/${product.slug}`} className="h-full border">
+    <Link href={`/shop/${product.slug}`} className="bg-card h-full border">
       <div className="relative overflow-hidden">
         <WixImage
-          // mediaIdentifier={mainImage?.url}
           mediaIdentifier={productUrl || ""}
           alt={mainImage?.altText ?? undefined}
           width={700}
@@ -24,7 +25,10 @@ export default function Product({ product }: ProductProps) {
           className="transition-transform duration-300 hover:scale-105"
         />
         <div className="absolute right-3 bottom-3 flex flex-wrap items-center gap-2">
-          here
+          {product.ribbon && <Badge>{product.ribbon.name}</Badge>}
+          <Badge className="bg-secondary text-secondary-foreground font-semibold">
+            {getFormattedPrice(product)}
+          </Badge>
         </div>
       </div>
       <div className="space-y-3 p-3">
@@ -36,4 +40,15 @@ export default function Product({ product }: ProductProps) {
       </div>
     </Link>
   );
+}
+
+function getFormattedPrice(product: productsV3.V3Product) {
+  const minPrice = product.actualPriceRange?.minValue?.amount;
+  const maxPrice = product.actualPriceRange?.maxValue?.amount;
+
+  if (minPrice && maxPrice && minPrice !== maxPrice) {
+    return `from ${formatCurrency(minPrice)}`;
+  } else {
+    return formatCurrency(minPrice);
+  }
 }

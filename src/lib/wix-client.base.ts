@@ -13,10 +13,7 @@ import { reviews } from "@wix/reviews";
 // import { createClient, OAuthStrategy, Tokens } from "@wix/sdk";
 import { createClient, OAuthStrategy } from "@wix/sdk";
 import { collections, products, productsV3 } from "@wix/stores";
-// import * as stores from "@wix/stores";
-
-// console.log("stores - ??", stores);
-// console.log(productGroupsV3);
+import { categories } from "@wix/categories";
 
 // export function getWixClient(tokens: Tokens | undefined) {
 export function getWixClient() {
@@ -25,6 +22,7 @@ export function getWixClient() {
       products,
       collections,
       productsV3,
+      categories,
       currentCart,
       checkout,
       redirects,

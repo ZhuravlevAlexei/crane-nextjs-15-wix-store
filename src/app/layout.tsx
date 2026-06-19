@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Lora, Inter } from "next/font/google";
-import "./globals.css";
+
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+
 import { cn } from "@/lib/utils";
+
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -9,10 +14,10 @@ const lora = Lora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Crane Shop",
-    absolute: "Crane Shop",
+    template: "%s | Flow Shop",
+    absolute: "Flow Shop",
   },
-  description: "E-commerce application for Crane Shop",
+  description: "E-commerce application for Flow Shop",
 };
 
 export default function RootLayout({
@@ -22,7 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn(lora.className, "font-sans", inter.variable)}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
