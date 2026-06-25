@@ -1,3 +1,4 @@
+import { ResolvingViewport } from "next/types.js";
 import { getWixClient } from "@/lib/wix-client.base";
 
 interface QueryProductsFilter {
@@ -22,4 +23,20 @@ export async function queryProducts({ catalogItemIds }: QueryProductsFilter) {
   );
 
   return featuredProducts;
+}
+
+export async function getPrpductsBySlug(slug: string) {
+  const wixClient = getWixClient();
+  try {
+    const { product } = await wixClient.productsV3.getProductBySlug(slug, {
+      fields: ["MEDIA_ITEMS_INFO", "PLAIN_DESCRIPTION"],
+    });
+
+    if (!product || !product.visible) return null;
+
+    return product;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }

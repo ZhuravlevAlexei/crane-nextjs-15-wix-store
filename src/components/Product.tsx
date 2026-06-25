@@ -10,12 +10,14 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const mainImage = product.media?.itemsInfo?.items?.[0];
+  // const mainImage = product.media?.itemsInfo?.items?.[0];
+  // const productUrl = convertWixImageUrl(mainImage?.image || "");
 
+  const mainImage = product.media?.main;
   const productUrl = convertWixImageUrl(mainImage?.image || "");
 
   return (
-    <Link href={`/shop/${product.slug}`} className="bg-card h-full border">
+    <Link href={`/products/${product.slug}`} className="bg-card h-full border">
       <div className="relative overflow-hidden">
         <WixImage
           mediaIdentifier={productUrl || ""}

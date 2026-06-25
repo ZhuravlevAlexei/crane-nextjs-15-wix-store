@@ -49,7 +49,7 @@ export default function Home() {
 }
 
 async function FeaturedProducts() {
-  await delay(1000);
+  await delay(500);
 
   const wixClient = getWixClient();
 
