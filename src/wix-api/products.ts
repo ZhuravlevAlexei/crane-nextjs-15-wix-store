@@ -1,5 +1,6 @@
 import { ResolvingViewport } from "next/types.js";
 import { getWixClient } from "@/lib/wix-client.base";
+import { cache } from "react";
 
 interface QueryProductsFilter {
   catalogItemIds?: string[];
@@ -25,7 +26,7 @@ export async function queryProducts({ catalogItemIds }: QueryProductsFilter) {
   return featuredProducts;
 }
 
-export async function getPrpductsBySlug(slug: string) {
+export const getProductsBySlug = cache(async (slug: string) => {
   const wixClient = getWixClient();
   try {
     const { product } = await wixClient.productsV3.getProductBySlug(slug, {
@@ -39,4 +40,4 @@ export async function getPrpductsBySlug(slug: string) {
     console.error(error);
     return null;
   }
-}
+});

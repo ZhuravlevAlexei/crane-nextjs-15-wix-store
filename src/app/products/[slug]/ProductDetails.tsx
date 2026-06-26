@@ -21,7 +21,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   >(
     product.options
       ?.map((option) => ({
-        // [option.name || ""]: option.choicesSettings?.choices?.[0]?.name || "",
         [option._id || ""]:
           option.choicesSettings?.choices?.[0]?.choiceId || "",
       }))
@@ -30,7 +29,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
   const selectedVariant = findVariant(product, selectedOptions);
 
-  const inStock = checkInStock(product, selectedOptions);
+  // const inStock = checkInStock(product, selectedOptions);
 
   const mainImage = product.media?.main;
   const productUrl = convertWixImageUrl(mainImage?.image || "");
@@ -68,14 +67,14 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           selectedOptions={selectedOptions}
           setSelectedOptions={setSelectedOptions}
         />
-        <div>
+        {/* <div>
           Selected options:
           <pre>{JSON.stringify(selectedOptions, null, 2)}</pre>
         </div>
         <div>
           Selected variant:
           <pre>{JSON.stringify(selectedVariant, null, 2)}</pre>
-        </div>
+        </div> */}
       </div>
     </div>
   );
