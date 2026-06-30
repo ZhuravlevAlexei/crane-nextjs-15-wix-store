@@ -1,3 +1,4 @@
+import { media } from "@wix/sdk";
 import { productsV3 } from "@wix/stores";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -10,10 +11,27 @@ export async function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-export function convertWixImageUrl(wixUrl: string) {
-  const fileName = wixUrl.split("v1/")[1].split("/")[0];
+export function getWixImageUrl(wixUrl: string) {
+  const imageData = media.getImageUrl(wixUrl);
 
-  return `https://static.wixstatic.com/media/${fileName}`;
+  return imageData.url;
+  // устарело, но рабочее решение
+  // const fileName = wixUrl.split("v1/")[1].split("/")[0];
+  // return `https://static.wixstatic.com/media/${fileName}`;
+}
+
+export function getWixVideoUrl(wixVideoUrl: string) {
+  const videoData = media.getVideoUrl(wixVideoUrl);
+
+  return videoData.url;
+}
+export function getWixVideoThumbnailrUrl(wixVideoUrl: string) {
+  const videoData = media.getVideoUrl(wixVideoUrl);
+
+  return videoData.thumbnail;
+  // устарело, но рабочее решение
+  // const fileName = wixVideoUrl.split("#posterUri=")[1].split("&posterWidth")[0];
+  // return `https://static.wixstatic.com/media/${fileName}`;
 }
 
 export function formatCurrency(

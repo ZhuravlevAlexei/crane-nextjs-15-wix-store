@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getProductsBySlug } from "@/wix-api/products";
 import ProductDetails from "./ProductDetails";
-import { convertWixImageUrl } from "@/lib/utils";
+import { getWixImageUrl } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PageProps) {
   if (!product?._id) return notFound();
 
   const mainImage = product.media?.main;
-  const productUrl = convertWixImageUrl(mainImage?.image || "");
+  const productUrl = getWixImageUrl(mainImage?.image || "");
 
   return {
     title: product.name,

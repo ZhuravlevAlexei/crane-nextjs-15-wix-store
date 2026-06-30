@@ -7,8 +7,9 @@ import WixImage from "@/components/WixImage";
 import Badge from "@/components/ui/badge";
 import ProductOptions from "./ProductOptions";
 
-import { checkInStock, convertWixImageUrl, findVariant } from "@/lib/utils";
+import { checkInStock, getWixImageUrl, findVariant } from "@/lib/utils";
 import ProductPrice from "./ProductPrice";
+import ProductMedia from "./ProductMedia";
 
 interface ProductDetailsProps {
   product: productsV3.V3Product;
@@ -31,20 +32,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
   // const inStock = checkInStock(product, selectedOptions);
 
-  const mainImage = product.media?.main;
-  const productUrl = convertWixImageUrl(mainImage?.image || "");
+  // const mainImage = product.media?.main;
+  // const productUrl = getWixImageUrl(mainImage?.image || "");
 
   return (
     <div className="flex flex-col gap-10 md:flex-row lg:gap-20">
-      <div className="basis-2/5">
-        <WixImage
-          mediaIdentifier={productUrl || ""}
-          alt={mainImage?.altText ?? undefined}
-          width={1000}
-          height={1000}
-          className="sticky top-0"
-        />
-      </div>
+      <ProductMedia media={product.media} />
       <div className="basis-3/5 space-y-5">
         <div className="space-y-2.5">
           <h1 className="text-3xl font-bold lg:text-4xl">{product.name}</h1>

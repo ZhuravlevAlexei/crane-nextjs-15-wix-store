@@ -2,7 +2,7 @@ import Link from "next/link";
 import WixImage from "./WixImage";
 import { productsV3 } from "@wix/stores";
 
-import { convertWixImageUrl, formatCurrency } from "@/lib/utils";
+import { getWixImageUrl, formatCurrency } from "@/lib/utils";
 import Badge from "./ui/badge";
 
 interface ProductProps {
@@ -11,10 +11,10 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
   // const mainImage = product.media?.itemsInfo?.items?.[0];
-  // const productUrl = convertWixImageUrl(mainImage?.image || "");
+  // const productUrl = getWixImageUrl(mainImage?.image || "");
 
   const mainImage = product.media?.main;
-  const productUrl = convertWixImageUrl(mainImage?.image || "");
+  const productUrl = getWixImageUrl(mainImage?.image || "");
 
   return (
     <Link href={`/products/${product.slug}`} className="bg-card h-full border">
